@@ -1,10 +1,10 @@
-import { router } from "expo-router";
-import { Tabs } from "tamagui";
-import { Text } from "@tamagui/core";
-import { useState } from "react";
+import { Text } from '@tamagui/core';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { Tabs } from 'tamagui';
 
 export const BottomTab = () => {
-  const [linkTab, setLinkTab] = useState<string>("/");
+  const [linkTab, setLinkTab] = useState<string>('/');
   return (
     <Tabs
       value={linkTab}

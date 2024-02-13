@@ -1,7 +1,7 @@
 import { View } from '@tamagui/core';
+import { router } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { Button, H1 } from 'tamagui';
-import { router } from 'expo-router';
 
 const styles = StyleSheet.create<any>({
   container: {
