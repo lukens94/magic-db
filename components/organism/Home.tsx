@@ -1,21 +1,21 @@
-import { View } from "@tamagui/core";
-import { StyleSheet } from "react-native";
-import { Button, H1 } from "tamagui";
-import { router } from "expo-router";
+import { View } from '@tamagui/core';
+import { StyleSheet } from 'react-native';
+import { Button, H1 } from 'tamagui';
+import { router } from 'expo-router';
 
 const styles = StyleSheet.create<any>({
   container: {
     flex: 1,
-    backgroundColor: "#D8F1A0",
+    backgroundColor: '#D8F1A0',
     padding: 20,
   },
   box: {
     flex: 1,
-    backgroundColor: "#F3C178",
+    backgroundColor: '#F3C178',
     borderWidth: 5,
-    borderColor: "black",
+    borderColor: 'black',
     borderRadius: 20,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     padding: 10,
   },
 });
@@ -29,7 +29,7 @@ export const Home = () => {
           size="$6"
           color="white"
           backgroundColor="#5C5D8D"
-          onPress={() => router.push("/products" as any)}
+          onPress={() => router.push('/products' as any)}
         >
           Go to Product list
         </Button>
