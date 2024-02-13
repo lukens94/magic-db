@@ -1,5 +1,5 @@
-import { Stack } from 'expo-router';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Stack } from 'expo-router';
 
 export const optionsHeader: NativeStackNavigationOptions = {
   headerStyle: {
