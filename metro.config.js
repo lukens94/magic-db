@@ -1,13 +1,13 @@
-const { getDefaultConfig } = require('expo/metro-config');
+/* eslint-env node */
+const {getDefaultConfig} = require("expo/metro-config");
 
 const config = getDefaultConfig(__dirname, {
-    // [Web-only]: Enables CSS support in Metro.
     isCSSEnabled: true,
 })
 
-const { withTamagui } = require('@tamagui/metro-plugin')
+const {withTamagui} = require("@tamagui/metro-plugin");
 module.exports = withTamagui(config, {
-    components: ['tamagui'],
-    config: './tamagui.config.ts',
-    outputCSS: './tamagui-web.css',
-})
+    components: ["tamagui"],
+    config: "./tamagui.config.ts",
+    outputCSS: "./tamagui-web.css",
+});
