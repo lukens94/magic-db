@@ -26,12 +26,11 @@ export const Home = () => {
       <View style={styles.box} alignItems="center" gap={50}>
         <H1>Home</H1>
         <Button
-          size="$6"
           color="white"
           backgroundColor="#5C5D8D"
-          onPress={() => router.push('/products' as any)}
+          onPress={() => router.push('/design-system' as any)}
         >
-          Go to Product list
+          Design System
         </Button>
       </View>
     </View>
