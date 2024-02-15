@@ -841,20 +841,12 @@ var require_validStyleProps = __commonJS({
       stylePropsView: () => stylePropsView2,
       tokenCategories: () => tokenCategories2,
       validPseudoKeys: () => validPseudoKeys2,
-      validStyles: () => validStyles2,
-      validStylesOnBaseProps: () => validStylesOnBaseProps2
+      validStyles: () => validStyles2
     });
     module2.exports = __toCommonJS2(validStyleProps_exports);
     var import_constants44 = require_cjs6();
-    var placeHolderTextColors2 = {
-      placeholderTextColor: true
-    };
-    var validStylesOnBaseProps2 = {
-      ...placeHolderTextColors2
-    };
     var textColors2 = {
       color: true,
-      ...placeHolderTextColors2,
       textDecorationColor: true,
       textShadowColor: true
     };
@@ -1021,7 +1013,6 @@ var require_validStyleProps = __commonJS({
       ...tokenCategories2.radius,
       ...tokenCategories2.size,
       ...tokenCategories2.radius,
-      ...validStylesOnBaseProps2,
       ...stylePropsTransform2,
       ...stylePropsUnitless2,
       // RN doesn't support specific border styles per-edge
@@ -1768,6 +1759,12 @@ var require_Stacks = __commonJS({
       right: 0,
       bottom: 0
     };
+    var getInset2 = /* @__PURE__ */ __name((val) => val && typeof val == "object" ? val : {
+      top: val,
+      left: val,
+      bottom: val,
+      right: val
+    }, "getInset");
     var variants3 = {
       fullscreen: {
         true: fullscreenStyle2
@@ -1775,7 +1772,8 @@ var require_Stacks = __commonJS({
       elevation: {
         "...size": import_getElevation3.getElevation,
         ":number": import_getElevation3.getElevation
-      }
+      },
+      inset: getInset2
     };
     var YStack2 = (0, import_core53.styled)(import_core53.View, {
       flexDirection: "column",
@@ -29129,15 +29127,8 @@ function composeEventHandlers(og, next, { checkDefaultPrevented = true } = {}) {
 __name(composeEventHandlers, "composeEventHandlers");
 
 // node_modules/@tamagui/helpers/dist/esm/validStyleProps.js
-var placeHolderTextColors = {
-  placeholderTextColor: true
-};
-var validStylesOnBaseProps = {
-  ...placeHolderTextColors
-};
 var textColors = {
   color: true,
-  ...placeHolderTextColors,
   textDecorationColor: true,
   textShadowColor: true
 };
@@ -29304,7 +29295,6 @@ var stylePropsView = {
   ...tokenCategories.radius,
   ...tokenCategories.size,
   ...tokenCategories.radius,
-  ...validStylesOnBaseProps,
   ...stylePropsTransform,
   ...stylePropsUnitless,
   // RN doesn't support specific border styles per-edge
@@ -30007,6 +29997,12 @@ var fullscreenStyle = {
   right: 0,
   bottom: 0
 };
+var getInset = /* @__PURE__ */ __name((val) => val && typeof val == "object" ? val : {
+  top: val,
+  left: val,
+  bottom: val,
+  right: val
+}, "getInset");
 var variants = {
   fullscreen: {
     true: fullscreenStyle
@@ -30014,7 +30010,8 @@ var variants = {
   elevation: {
     "...size": getElevation,
     ":number": getElevation
-  }
+  },
+  inset: getInset
 };
 var YStack = (0, import_core3.styled)(import_core3.View, {
   flexDirection: "column",
@@ -33926,8 +33923,9 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
   if (domElement) {
     const win = getWindow(domElement);
     const offsetWin = offsetParent && isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
-    let currentIFrame = win.frameElement;
-    while (currentIFrame && offsetParent && offsetWin !== win) {
+    let currentWin = win;
+    let currentIFrame = currentWin.frameElement;
+    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
       const iframeScale = getScale(currentIFrame);
       const iframeRect = currentIFrame.getBoundingClientRect();
       const css = getComputedStyle2(currentIFrame);
@@ -33939,7 +33937,8 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
       height *= iframeScale.y;
       x += left;
       y += top;
-      currentIFrame = getWindow(currentIFrame).frameElement;
+      currentWin = getWindow(currentIFrame);
+      currentIFrame = currentWin.frameElement;
     }
   }
   return rectToClientRect({
@@ -33951,31 +33950,16 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
 }
 __name(getBoundingClientRect, "getBoundingClientRect");
 var topLayerSelectors = [":popover-open", ":modal"];
-function topLayer(floating) {
-  let isTopLayer = false;
-  let x = 0;
-  let y = 0;
-  function setIsTopLayer(selector) {
+function isTopLayer(floating) {
+  return topLayerSelectors.some((selector) => {
     try {
-      isTopLayer = isTopLayer || floating.matches(selector);
+      return floating.matches(selector);
     } catch (e) {
+      return false;
     }
-  }
-  __name(setIsTopLayer, "setIsTopLayer");
-  topLayerSelectors.forEach((selector) => {
-    setIsTopLayer(selector);
   });
-  if (isTopLayer) {
-    const containingBlock = getContainingBlock(floating);
-    if (containingBlock) {
-      const rect = containingBlock.getBoundingClientRect();
-      x = rect.x;
-      y = rect.y;
-    }
-  }
-  return [isTopLayer, x, y];
 }
-__name(topLayer, "topLayer");
+__name(isTopLayer, "isTopLayer");
 function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
   let {
     elements,
@@ -33983,9 +33967,10 @@ function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
     offsetParent,
     strategy
   } = _ref;
+  const isFixed = strategy === "fixed";
   const documentElement = getDocumentElement(offsetParent);
-  const [isTopLayer] = elements ? topLayer(elements.floating) : [false];
-  if (offsetParent === documentElement || isTopLayer) {
+  const topLayer = elements ? isTopLayer(elements.floating) : false;
+  if (offsetParent === documentElement || topLayer && isFixed) {
     return rect;
   }
   let scroll = {
@@ -33995,7 +33980,7 @@ function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
   let scale = createCoords(1);
   const offsets = createCoords(0);
   const isOffsetParentAnElement = isHTMLElement(offsetParent);
-  if (isOffsetParentAnElement || !isOffsetParentAnElement && strategy !== "fixed") {
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
     if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
       scroll = getNodeScroll(offsetParent);
     }
@@ -34174,7 +34159,7 @@ function getDimensions(element) {
   };
 }
 __name(getDimensions, "getDimensions");
-function getRectRelativeToOffsetParent(element, offsetParent, strategy, floating) {
+function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
   const isOffsetParentAnElement = isHTMLElement(offsetParent);
   const documentElement = getDocumentElement(offsetParent);
   const isFixed = strategy === "fixed";
@@ -34196,17 +34181,8 @@ function getRectRelativeToOffsetParent(element, offsetParent, strategy, floating
       offsets.x = getWindowScrollBarX(documentElement);
     }
   }
-  let x = rect.left + scroll.scrollLeft - offsets.x;
-  let y = rect.top + scroll.scrollTop - offsets.y;
-  const [isTopLayer, topLayerX, topLayerY] = topLayer(floating);
-  if (isTopLayer) {
-    x += topLayerX;
-    y += topLayerY;
-    if (isOffsetParentAnElement) {
-      x += offsetParent.clientLeft;
-      y += offsetParent.clientTop;
-    }
-  }
+  const x = rect.left + scroll.scrollLeft - offsets.x;
+  const y = rect.top + scroll.scrollTop - offsets.y;
   return {
     x,
     y,
@@ -34227,7 +34203,7 @@ function getTrueOffsetParent(element, polyfill) {
 __name(getTrueOffsetParent, "getTrueOffsetParent");
 function getOffsetParent(element, polyfill) {
   const window2 = getWindow(element);
-  if (!isHTMLElement(element)) {
+  if (!isHTMLElement(element) || isTopLayer(element)) {
     return window2;
   }
   let offsetParent = getTrueOffsetParent(element, polyfill);
@@ -34244,7 +34220,7 @@ var getElementRects = /* @__PURE__ */ __name(async function(data) {
   const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
   const getDimensionsFn = this.getDimensions;
   return {
-    reference: getRectRelativeToOffsetParent(data.reference, await getOffsetParentFn(data.floating), data.strategy, data.floating),
+    reference: getRectRelativeToOffsetParent(data.reference, await getOffsetParentFn(data.floating), data.strategy),
     floating: {
       x: 0,
       y: 0,
@@ -38465,19 +38441,20 @@ var PopoverContent = PopperContentFrame.extractable(
       zIndex,
       __scopePopover,
       ...contentImplProps
-    } = props, context = usePopoverContext(__scopePopover), contentRef = React21.useRef(null), composedRefs = useComposedRefs(forwardedRef, contentRef), isRightClickOutsideRef = React21.useRef(false);
-    return React21.useEffect(() => {
+    } = props, context = usePopoverContext(__scopePopover), contentRef = React21.useRef(null), composedRefs = useComposedRefs(forwardedRef, contentRef), isRightClickOutsideRef = React21.useRef(false), [isFullyHidden, setIsFullyHidden] = React21.useState(!context.open);
+    return context.open && isFullyHidden && setIsFullyHidden(false), React21.useEffect(() => {
       if (!context.open)
         return;
       const content = contentRef.current;
       if (content)
         return (0, import_aria_hidden2.hideOthers)(content);
-    }, [context.open]), /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(PopoverContentPortal, { __scopePopover, zIndex: props.zIndex, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_core24.Stack, { pointerEvents: context.open ? "auto" : "none", children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+    }, [context.open]), !context.keepChildrenMounted && isFullyHidden ? null : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(PopoverContentPortal, { __scopePopover, zIndex: props.zIndex, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_core24.Stack, { pointerEvents: context.open ? "auto" : "none", children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
       PopoverContentImpl,
       {
         ...contentImplProps,
         disableRemoveScroll,
         ref: composedRefs,
+        setIsFullyHidden,
         __scopePopover,
         trapFocus: trapFocus ?? context.open,
         disableOutsidePointerEvents: true,
@@ -38544,10 +38521,9 @@ var PopoverContentImpl = React21.forwardRef(function(props, forwardedRef) {
     children,
     disableRemoveScroll,
     freezeContentsWhenHidden,
+    setIsFullyHidden,
     ...contentProps
-  } = props, context = usePopoverContext(__scopePopover), { open, keepChildrenMounted } = context, popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE), [isFullyHidden, setIsFullyHidden] = React21.useState(!context.open), contents = React21.useMemo(() => isWeb ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { display: "contents" }, children }) : children, [children]);
-  if (open && isFullyHidden && setIsFullyHidden(false), !keepChildrenMounted && isFullyHidden)
-    return null;
+  } = props, context = usePopoverContext(__scopePopover), { open, keepChildrenMounted } = context, popperContext = usePopperContext(__scopePopover || POPOVER_SCOPE), contents = React21.useMemo(() => isWeb ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { display: "contents" }, children }) : children, [children]);
   if (context.breakpointActive) {
     const childrenWithoutScrollView = React21.Children.toArray(children).map((child) => React21.isValidElement(child) && child.type === import_react_native_web7.ScrollView ? child.props.children : child);
     let content = childrenWithoutScrollView;
@@ -38567,7 +38543,7 @@ var PopoverContentImpl = React21.forwardRef(function(props, forwardedRef) {
       present: !!open,
       keepChildrenMounted,
       onExitComplete: () => {
-        setIsFullyHidden(true);
+        setIsFullyHidden && setIsFullyHidden(true);
       },
       children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
         PopperContent,
@@ -40303,24 +40279,30 @@ var NativeSelectFrame = (0, import_core35.styled)(ThemeableStack, {
 });
 var SelectGroup = React32.forwardRef(
   (props, forwardedRef) => {
-    const { __scopeSelect, ...groupProps } = props, groupId = React32.useId(), context = useSelectContext(GROUP_NAME2, __scopeSelect), itemParentContext = useSelectItemParentContext(GROUP_NAME2, __scopeSelect), size3 = itemParentContext.size ?? "$true", nativeSelectRef = React32.useRef(null), content = itemParentContext.shouldRenderWebNative ? (
-      // @ts-expect-error until we support typing based on tag
-      /* @__PURE__ */ (0, import_jsx_runtime41.jsx)(NativeSelectFrame, { asChild: true, size: size3, value: context.value, children: /* @__PURE__ */ (0, import_jsx_runtime41.jsx)(
-        NativeSelectTextFrame,
-        {
-          onChange: (event) => {
-            itemParentContext.onChange(event.currentTarget.value);
-          },
-          size: size3,
-          ref: nativeSelectRef,
-          style: {
-            color: "var(--color)",
-            // @ts-ignore
-            appearance: "none"
-          },
-          children: props.children
-        }
-      ) })
+    const { __scopeSelect, ...groupProps } = props, groupId = React32.useId(), context = useSelectContext(GROUP_NAME2, __scopeSelect), itemParentContext = useSelectItemParentContext(GROUP_NAME2, __scopeSelect), size3 = itemParentContext.size ?? "$true", nativeSelectRef = React32.useRef(null), content = itemParentContext.shouldRenderWebNative ? /* @__PURE__ */ (0, import_jsx_runtime41.jsx)(
+      NativeSelectFrame,
+      {
+        asChild: true,
+        size: size3,
+        value: context.value,
+        id: itemParentContext.id,
+        children: /* @__PURE__ */ (0, import_jsx_runtime41.jsx)(
+          NativeSelectTextFrame,
+          {
+            onChange: (event) => {
+              itemParentContext.onChange(event.currentTarget.value);
+            },
+            size: size3,
+            ref: nativeSelectRef,
+            style: {
+              color: "var(--color)",
+              // @ts-ignore
+              appearance: "none"
+            },
+            children: props.children
+          }
+        )
+      }
     ) : /* @__PURE__ */ (0, import_jsx_runtime41.jsx)(
       SelectGroupFrame,
       {
@@ -42460,7 +42442,8 @@ var InputFrame = (0, import_core48.styled)(
   {
     isInput: true,
     acceptTokens: {
-      placeholderTextColor: "color"
+      placeholderTextColor: "color",
+      selectionColor: "color"
     }
   }
 );
