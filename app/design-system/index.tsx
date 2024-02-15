@@ -12,7 +12,7 @@ export default function DesignSystem() {
         backgroundColor="#5C5D8D"
         onPress={() => router.push('/design-system/typography' as any)}
       >
-        Design System
+        Typography
       </Button>
     </YStack>
   );
