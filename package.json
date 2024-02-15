@@ -17,6 +17,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.0.2",
     "@tamagui/config": "^1.89.24",
+    "@tamagui/core": "^1.89.24",
     "@tamagui/shorthands": "^1.89.24",
     "@tanstack/react-query": "^5.20.2",
     "axios": "^1.6.7",

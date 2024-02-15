@@ -3,17 +3,17 @@ import { Button, YStack } from 'tamagui';
 
 import { Heading } from '@/components/atoms/Heading/Heading';
 
-export const Home = () => {
+export default function DesignSystem() {
   return (
     <YStack gap={10} backgroundColor="$primary800" height="100%" alignItems="center" padding={40}>
-      <Heading>HOME PAGE</Heading>
+      <Heading>DESIGN SYSTEM</Heading>
       <Button
         color="white"
         backgroundColor="#5C5D8D"
-        onPress={() => router.push('/design-system' as any)}
+        onPress={() => router.push('/design-system/typography' as any)}
       >
-        Design System
+        Typography
       </Button>
     </YStack>
   );
-};
+}
