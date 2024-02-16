@@ -1,6 +1,8 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 
+import { HeaderNavigation } from '@/src/components/organism/navigators/HeaderNavigation';
+
 export const optionsHeader: NativeStackNavigationOptions = {
   headerStyle: {
     backgroundColor: '#654F6F',
@@ -18,8 +20,7 @@ export default function RootStack() {
       <Stack.Screen
         name="index"
         options={{
-          ...optionsHeader,
-          headerTitle: 'Home page',
+          header: () => <HeaderNavigation />,
         }}
       />
       <Stack.Screen name="products" options={{ headerShown: false }} />

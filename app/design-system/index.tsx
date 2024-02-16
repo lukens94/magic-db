@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { Button, YStack } from 'tamagui';
 
-import { Heading } from '@/components/atoms/Heading/Heading';
+import { Heading } from '@/src/components/atoms/Heading/Heading';
 
 export default function DesignSystem() {
   return (
