@@ -1,7 +1,15 @@
 import { YStack } from 'tamagui';
 
-import { DisplayHeading, H1, H2, H3, H4, H5, Heading } from '@/components/atoms/Heading/Heading';
-import { Text } from '@/components/atoms/Text/Text';
+import {
+  DisplayHeading,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  Heading,
+} from '@/src/components/atoms/Heading/Heading';
+import { Text } from '@/src/components/atoms/Text/Text';
 
 export const Typography = () => {
   return (

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TamaguiInternalConfig, TamaguiProvider } from 'tamagui';
 
-import RootStack from '@/components/organism/RootStack';
+import { AppNavigator } from '@/src/navigators/AppNavigator';
 import tamaguiConfig from '@/tamagui.config';
 
 export default function RootLayout() {
@@ -29,12 +29,12 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TamaguiProvider config={tamaguiConfig as TamaguiInternalConfig}>
-        <SafeAreaProvider>
-          <RootStack />
-        </SafeAreaProvider>
-      </TamaguiProvider>
-    </QueryClientProvider>
+    <SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <TamaguiProvider config={tamaguiConfig as TamaguiInternalConfig}>
+          <AppNavigator />
+        </TamaguiProvider>
+      </QueryClientProvider>
+    </SafeAreaProvider>
   );
 }
