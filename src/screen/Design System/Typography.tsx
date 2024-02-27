@@ -13,7 +13,8 @@ import { Text } from '@/src/components/atoms/Text/Text';
 
 export const Typography = () => {
   return (
-    <YStack gap={10}>
+    <YStack gap={10} m={10}>
+      <DisplayHeading>Typography</DisplayHeading>
       <DisplayHeading>Display Heading</DisplayHeading>
       <H1>Heading 1</H1>
       <H2>Heading 2</H2>

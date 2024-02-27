@@ -6,7 +6,7 @@ import { createFont, createTamagui, CreateTamaguiProps } from 'tamagui';
 const headingFont = createFont({
   family: 'BigShouldersDisplay-Black',
   color: {
-    true: '$darkLilac',
+    true: '$primary800',
   },
   size: {
     true: 28,
@@ -43,7 +43,7 @@ const headingFont = createFont({
 const bodyFont = createFont({
   family: 'AccordAlternate-Regular',
   color: {
-    true: '$darkLilac',
+    true: '$primary800',
   },
   size: {
     true: 16,
@@ -79,7 +79,7 @@ const bodyFont = createFont({
   },
 });
 
-export const LBA_HEX_COLORS = {
+/*export const LBA_HEX_COLORS = {
   darkGold: '#888654',
   darkLilac: '#1F1F3C',
   darkOrange: '#2A0000',
@@ -116,6 +116,39 @@ export const LBA_HEX_COLORS = {
   gamificationDarkRose: '#E2BEFF',
   gamificationDarkGreen: '#A9E4BA',
   goldAlpha20: 'rgba(206,203,157,0.2)',
+};*/
+
+export const POKEMON_HEX_COLORS = {
+  primary50: '#F2F2F2',
+  primary100: '#E6E6E6',
+  primary200: '#CCCCCC',
+  primary300: '#B3B3B3',
+  primary400: '#999999',
+  primary500: '#808080',
+  primary600: '#666666',
+  primary700: '#4D4D4D',
+  primary800: '#333333',
+  primary900: '#1A1A1A',
+  primaryBlue: '#173EA5',
+  primaryRed: '#CD3131',
+  normal: '#919AA2',
+  fire: '#FF9D55',
+  water: '#5090D6',
+  electric: '#F4D23C',
+  grass: '#63BC5A',
+  ice: '#73CEC0',
+  fighting: '#CE416B',
+  poison: '#B567CE',
+  ground: '#D97845',
+  flying: '#89AAE3',
+  psychic: '#FA7179',
+  bug: '#91C12F',
+  rock: '#C5B78C',
+  ghost: '#5269AD',
+  dragon: '#0B6DC3',
+  dark: '#5A5465',
+  steel: '#5A8EA2',
+  fairy: '#EC8FE6',
 };
 
 const tamaguiConfig = createTamagui({
@@ -128,7 +161,7 @@ const tamaguiConfig = createTamagui({
   },
   tokens: {
     ...tokens,
-    color: { ...LBA_HEX_COLORS },
+    color: { ...POKEMON_HEX_COLORS },
   },
 } as CreateTamaguiProps);
 
