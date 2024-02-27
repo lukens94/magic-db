@@ -4,7 +4,7 @@ import { GetProps, SizableText, styled } from 'tamagui';
 export const Heading = styled(SizableText as StylableComponent, {
   name: 'Heading',
   textTransform: 'uppercase',
-  color: '$darkLilac',
+  color: '$primary800',
   fontWeight: '900',
   fontFamily: '$heading',
   size: '$h2',
@@ -15,7 +15,7 @@ export const Heading = styled(SizableText as StylableComponent, {
         color: '$primary50',
       },
       dark: {
-        color: '$darkLilac',
+        color: '$primary800',
       },
       boldUppercase: {
         textTransform: 'uppercase',
@@ -30,7 +30,7 @@ export const Heading = styled(SizableText as StylableComponent, {
         color: '$primary50',
       },
       dark: {
-        color: '$darkLilac',
+        color: '$primary800',
       },
     },
   } as StylableComponent,
