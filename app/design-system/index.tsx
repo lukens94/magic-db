@@ -11,6 +11,7 @@ export default function DesignSystem() {
       <Button onPress={() => router.push('/design-system/typography' as any)}>Typography</Button>
       <Button onPress={() => router.push('/design-system/iconography' as any)}>Iconography</Button>
       <Button onPress={() => router.push('/design-system/button' as any)}>Button</Button>
+      <Button onPress={() => router.push('/design-system/badge' as any)}>Badge</Button>
     </YStack>
   );
 }
